@@ -1,0 +1,565 @@
+{
+	"info": {
+		"_postman_id": "e345306e-1ce4-4912-b87b-98f1a52d1c3c",
+		"name": "Pruebas BackendI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45852683",
+		"_collection_link": "https://www.postman.com/spaceflight-engineer-91089826/workspace/testin-qa/collection/45852683-e345306e-1ce4-4912-b87b-98f1a52d1c3c?action=share&source=collection_link&creator=45852683"
+	},
+	"item": [
+		{
+			"name": "Crear producto",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Mouse Logitech G203\",\r\n  \"description\": \"Mouse gamer con iluminación RGB\",\r\n  \"code\": \"MLG203\",\r\n  \"price\": 15000,\r\n  \"status\": true,\r\n  \"stock\": 25,\r\n  \"category\": \"Periféricos\",\r\n  \"thumbnail\": \"https://example.com/mouse.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "crear producto",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Mouse Logitech G203\",\r\n  \"description\": \"Mouse gamer con iluminación RGB\",\r\n  \"code\": \"MLG203\",\r\n  \"price\": 15000,\r\n  \"status\": true,\r\n  \"stock\": 25,\r\n  \"category\": \"Periféricos\",\r\n  \"thumbnail\": \"https://example.com/mouse.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "280"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"118-FYSKsR7lWDJhD6viUL0nE1WIWoo\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 13 Feb 2026 19:51:15 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"product\": {\n        \"id\": \"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2\",\n        \"title\": \"Mouse Logitech G203\",\n        \"description\": \"Mouse gamer con iluminación RGB\",\n        \"code\": \"MLG203\",\n        \"price\": 15000,\n        \"status\": true,\n        \"stock\": 25,\n        \"category\": \"Periféricos\",\n        \"thumbnail\": \"https://example.com/mouse.jpg\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener producto por id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/products/18ee5ebe-5a68-4e7a-a278-bc2c30a317a2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "obtener producto por su ID",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/18ee5ebe-5a68-4e7a-a278-bc2c30a317a2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "280"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"118-FYSKsR7lWDJhD6viUL0nE1WIWoo\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 13 Feb 2026 19:52:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"product\": {\n        \"id\": \"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2\",\n        \"title\": \"Mouse Logitech G203\",\n        \"description\": \"Mouse gamer con iluminación RGB\",\n        \"code\": \"MLG203\",\n        \"price\": 15000,\n        \"status\": true,\n        \"stock\": 25,\n        \"category\": \"Periféricos\",\n        \"thumbnail\": \"https://example.com/mouse.jpg\"\n    }\n}"
+				},
+				{
+					"name": "obtener producto por id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/18ee5ebe-5a68-4e7a-a278-bc2c30a317a2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "280"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"118-FYSKsR7lWDJhD6viUL0nE1WIWoo\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 13 Feb 2026 19:52:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"product\": {\n        \"id\": \"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2\",\n        \"title\": \"Mouse Logitech G203\",\n        \"description\": \"Mouse gamer con iluminación RGB\",\n        \"code\": \"MLG203\",\n        \"price\": 15000,\n        \"status\": true,\n        \"stock\": 25,\n        \"category\": \"Periféricos\",\n        \"thumbnail\": \"https://example.com/mouse.jpg\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Obtener todos los productos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Mouse Logitech G203\",\r\n  \"description\": \"Mouse gamer con iluminación RGB\",\r\n  \"code\": \"MLG203\",\r\n  \"price\": 15000,\r\n  \"status\": true,\r\n  \"stock\": 25,\r\n  \"category\": \"Periféricos\",\r\n  \"thumbnail\": \"https://example.com/mouse.jpg\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Mouse Logitech G203\",\r\n  \"description\": \"Mouse gamer con iluminación RGB\",\r\n  \"code\": \"MLG203\",\r\n  \"price\": 15000,\r\n  \"status\": true,\r\n  \"stock\": 25,\r\n  \"category\": \"Periféricos\",\r\n  \"thumbnail\": \"https://example.com/mouse.jpg\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "283"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"11b-v4lFdawsagu1xIWv0epqlLkher0\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 13 Feb 2026 19:57:04 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"products\": [\n        {\n            \"id\": \"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2\",\n            \"title\": \"Mouse Logitech G203\",\n            \"description\": \"Mouse gamer con iluminación RGB\",\n            \"code\": \"MLG203\",\n            \"price\": 15000,\n            \"status\": true,\n            \"stock\": 25,\n            \"category\": \"Periféricos\",\n            \"thumbnail\": \"https://example.com/mouse.jpg\"\n        }\n    ]\n}"
+				}
+			]
+		},
+		{
+			"name": "actualizar producto por id",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Mouse Logitech G203\",\r\n  \"description\": \"Mouse gamer con iluminación\",\r\n  \"code\": \"MLG203\",\r\n  \"price\": 20000,\r\n  \"status\": true,\r\n  \"stock\": 26,\r\n  \"category\": \"Periféricos\",\r\n  \"thumbnail\": \"https://example.com/mouse.jpg\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/products/18ee5ebe-5a68-4e7a-a278-bc2c30a317a2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "actualizar producto por id",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Mouse Logitech G203\",\r\n  \"description\": \"Mouse gamer con iluminación\",\r\n  \"code\": \"MLG203\",\r\n  \"price\": 20000,\r\n  \"status\": true,\r\n  \"stock\": 26,\r\n  \"category\": \"Periféricos\",\r\n  \"thumbnail\": \"https://example.com/mouse.jpg\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/18ee5ebe-5a68-4e7a-a278-bc2c30a317a2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "276"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"114-h2sBLl3rI4P3KH8WMSMPRrpuJyw\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 13 Feb 2026 20:01:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"product\": {\n        \"id\": \"18ee5ebe-5a68-4e7a-a278-bc2c30a317a2\",\n        \"title\": \"Mouse Logitech G203\",\n        \"description\": \"Mouse gamer con iluminación\",\n        \"code\": \"MLG203\",\n        \"price\": 20000,\n        \"status\": true,\n        \"stock\": 26,\n        \"category\": \"Periféricos\",\n        \"thumbnail\": \"https://example.com/mouse.jpg\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "Borrar producto por su id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/products/f016ae47-4529-450d-8278-568db6a070fb",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"f016ae47-4529-450d-8278-568db6a070fb"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "borrar producto por su id",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/f016ae47-4529-450d-8278-568db6a070fb",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								"f016ae47-4529-450d-8278-568db6a070fb"
+							]
+						}
+					},
+					"status": "No Content",
+					"code": 204,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 13 Feb 2026 22:28:07 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": null
+				}
+			]
+		},
+		{
+			"name": "crear un carrito",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "crear un carrito",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/carts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "87"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"57-89xpctb97Qi4/EcOQTq3cMDPKCw\""
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 13 Feb 2026 22:34:26 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"status\": \"success\",\n    \"cart\": {\n        \"id\": \"aca5bf4f-e851-4aa7-863d-2a7370615e15\",\n        \"products\": []\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
