@@ -110,22 +110,34 @@ class ProductManager {
       throw new Error("Error al eliminar el producto:" + error.message);
     }
   }
+
+  async updateProductById(productId, updatedFields) {
+    try {
+      const products = await this.getProducts();
+
+      const productIndex = products.findIndex(
+        (product) => product.id === productId,
+      );
+
+      if (productIndex === -1) {
+        throw new Error("Producto no encontrado");
+      }
+
+      //evitar que se actualice el ID
+      const { id, ...rest } = updatedFields;
+
+      products[productIndex] = {
+        ...products[productIndex],
+        ...rest,
+      };
+
+      await fs.writeFile(this.path, JSON.stringify(products, null, 2), "utf-8");
+
+      return products[productIndex];
+    } catch (error) {
+      throw new Error("Error al actualizar el producto:" + error.message);
+    }
+  }
 }
 
-const manager = new ProductManager();
-
-manager.addProduct(
-  "Teclado",
-  "Teclado mecánico",
-  15000,
-  "img/teclado.jpg",
-  "TEC001",
-  10,
-);
-
-manager.addProduct("Mouse", "Mouse gamer", 8000, "img/mouse.jpg", "MOU001", 20);
-
-console.table(manager.getProducts());
-
-console.table(manager.getProductById(1));
-console.table(manager.getProductById(99));
+export default ProductManager;
