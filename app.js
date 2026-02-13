@@ -1,6 +1,6 @@
 import express from "express";
-import ProductManager from "./src/managers/productManager";
-import CartManager from "./src/managers/cartManager";
+import ProductManager from "./src/managers/productManager.js";
+import CartManager from "./src/managers/cartManager.js";
 
 const app = express();
 
@@ -14,7 +14,7 @@ const cartManager = new CartManager("./src/data/carts.json");
 // Productos
 
 // Obtener todos los productos o un producto por ID
-app.get("api/products", async (req, res) => {
+app.get("/api/products", async (req, res) => {
   try {
     const products = await productManager.getProducts();
     res.status(200).json({ status: "success", products });
@@ -49,7 +49,7 @@ app.put("/api/products/:productId", async (req, res) => {
   try {
     const updates = req.body;
 
-    const updatedProduct = await productManager.updateProduct(
+    const updatedProduct = await productManager.updateProductById(
       req.params.productId,
       updates,
     );
