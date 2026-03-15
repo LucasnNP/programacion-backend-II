@@ -1,5 +1,5 @@
 import express from "express";
-import ProductManager from "../managers/productManager";
+import ProductManager from "../managers/productManager.js";
 
 const viewsRouter = express.Router();
 const productManager = new ProductManager("./src/data/products.json");
@@ -17,7 +17,7 @@ viewsRouter.get("/dashboard", async (req, res) => {
   }
 });
 
-viewsRouter.get("/dasboard/detail/:productId", async (req, res) => {
+viewsRouter.get("/dashboard/detail/:productId", async (req, res) => {
   try {
     const productId = req.params.productId;
     const product = await productManager.getProductById(req.params.productId);

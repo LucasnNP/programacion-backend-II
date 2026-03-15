@@ -1,5 +1,5 @@
 import express from "express";
-import CartManager from "../managers/cartManager";
+import CartManager from "../managers/cartManager.js";
 
 const cartRouter = express.Router();
 const cartManager = new CartManager("./src/data/carts.json");
@@ -25,7 +25,7 @@ cartRouter.get("/:cartId", async (req, res) => {
 });
 
 // Agregar un producto a un carrito por ID
-cartRouter.post("/:cartId/products/:productId", async (req, res) => {
+cartRouter.post("/:cartId/product/:productId", async (req, res) => {
   try {
     const cart = await cartManager.addProductToCart(
       req.params.cartId,

@@ -1,6 +1,6 @@
 import express from "express";
 import productsRouter from "./src/routes/products.route.js";
-import CartManager from "./src/managers/cartManager.js";
+import cartRouter from "./src/routes/cart.route.js";
 import { engine } from "express-handlebars";
 import viewsRouter from "./src/routes/views.route.js";
 import http from "http";
@@ -32,7 +32,7 @@ app.set("views", "./src/views");
 app.use("/api/products", productsRouter);
 
 // Carritos
-app.use("/api/carts", CartManager);
+app.use("/api/carts", cartRouter);
 
 app.use("/", viewsRouter);
 
