@@ -1,0 +1,5 @@
+{
+  "ignore": ["*.json"],
+  "watch": ["src"],
+  "ext": "js,handlebars"
+}

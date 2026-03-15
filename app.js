@@ -1,117 +1,71 @@
 import express from "express";
-import ProductManager from "./src/managers/productManager.js";
+import productsRouter from "./src/routes/products.route.js";
 import CartManager from "./src/managers/cartManager.js";
+import { engine } from "express-handlebars";
+import viewsRouter from "./src/routes/views.route.js";
+import http from "http";
+import { Server } from "socket.io";
+import ProductManager from "./src/managers/productManager.js";
 
 const app = express();
+
+// Declaración de servidior para poder configurar manualmente
+const server = http.createServer(app);
+const io = new Server(server);
+const productManager = new ProductManager("./src/data/products.json");
 
 // Middleware para poder recibir JSON
 app.use(express.json());
 
-//instancias de los managers
-const productManager = new ProductManager("./src/data/products.json");
-const cartManager = new CartManager("./src/data/carts.json");
+// Middleware para servir archivos estáticos desde la carpeta "public"
+app.use(express.static("./public"));
+
+// Middleware para poder recibir datos de formularios y parsearlos correctamente
+app.use(express.urlencoded({ extended: true }));
+
+// Handlebars configuration
+app.engine("handlebars", engine());
+app.set("view engine", "handlebars");
+app.set("views", "./src/views");
 
 // Productos
-
-// Obtener todos los productos o un producto por ID
-app.get("/api/products", async (req, res) => {
-  try {
-    const products = await productManager.getProducts();
-    res.status(200).json({ status: "success", products });
-  } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
-  }
-});
-
-app.get("/api/products/:productId", async (req, res) => {
-  try {
-    const product = await productManager.getProductById(req.params.productId);
-    res.status(200).json({ status: "success", product });
-  } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
-  }
-});
-
-// Crear un nuevo producto
-app.post("/api/products", async (req, res) => {
-  try {
-    const newProduct = req.body;
-    const product = await productManager.addProduct(newProduct);
-
-    res.status(201).json({ status: "success", product });
-  } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
-  }
-});
-
-// Actualizar un producto por ID
-app.put("/api/products/:productId", async (req, res) => {
-  try {
-    const updates = req.body;
-
-    const updatedProduct = await productManager.updateProductById(
-      req.params.productId,
-      updates,
-    );
-
-    res.status(200).json({ status: "success", product: updatedProduct });
-  } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
-  }
-});
-
-// Eliminar un producto por ID
-app.delete("/api/products/:productId", async (req, res) => {
-  try {
-    await productManager.deleteProductById(req.params.productId);
-    res.status(204).send();
-  } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
-  }
-});
+app.use("/api/products", productsRouter);
 
 // Carritos
+app.use("/api/carts", CartManager);
 
-// Crear un nuevo carrito
-app.post("/api/carts", async (req, res) => {
-  try {
-    const cart = await cartManager.createCart();
-    res.status(201).json({ status: "success", cart });
-  } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
-  }
-});
-
-// Obtener productos de un carrito por ID
-app.get("/api/carts/:cartId", async (req, res) => {
-  try {
-    const products = await cartManager.getCartById(req.params.cartId);
-    res.status(200).json({ status: "success", products });
-  } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
-  }
-});
-
-// Agregar un producto a un carrito por ID
-app.post("/api/carts/:cartId/products/:productId", async (req, res) => {
-  try {
-    const cart = await cartManager.addProductToCart(
-      req.params.cartId,
-      req.params.productId,
-    );
-
-    res.status(200).json({ status: "success", cart });
-  } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
-  }
-});
+app.use("/", viewsRouter);
 
 // Ruta no encontrada
 app.use((req, res) => {
   res.status(404).json({ status: "error", message: "Ruta no encontrada" });
 });
 
+io.on("connection", async (socket) => {
+  console.log("Nuevo cliente conectado con id: " + socket.id);
+
+  const products = await productManager.getProducts();
+  socket.emit("product list", { products });
+
+  socket.on("delete product", async ({ productId }) => {
+    await productManager.deleteProductById(productId);
+
+    // Se obtiene la lista actualizada de productos y se emite a todos los clientes conectados
+    const products = await productManager.getProducts();
+    io.emit("product list", { products });
+  });
+
+  socket.on("new product", async () => {
+    const products = await productManager.getProducts();
+    io.emit("product list", { products });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Cliente desconectado con id: " + socket.id);
+  });
+});
+
 // Iniciar el servidor
-app.listen(8080, () => {
+server.listen(8080, () => {
   console.log("Servidor escuchando en el puerto 8080");
 });
