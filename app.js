@@ -6,8 +6,16 @@ import viewsRouter from "./src/routes/views.route.js";
 import http from "http";
 import { Server } from "socket.io";
 import ProductManager from "./src/managers/productManager.js";
+import connectMongoDB from "./src/config/db.js";
+import dotenv from "dotenv";
+
+//inicialización de variables de entorno
+dotenv.config();
 
 const app = express();
+//const PORT = process.env.PORT || 8081;
+
+connectMongoDB();
 
 // Declaración de servidior para poder configurar manualmente
 const server = http.createServer(app);
