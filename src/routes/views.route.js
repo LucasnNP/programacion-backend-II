@@ -1,36 +1,45 @@
 import express from "express";
-import ProductManager from "../managers/productManager.js";
+import Product from "../models/product.model.js";
 
 const viewsRouter = express.Router();
-const productManager = new ProductManager("./src/data/products.json");
 
-viewsRouter.get("/", (req, res) => {
-  res.render("home", { title: "Home" });
-});
-
-viewsRouter.get("/dashboard", async (req, res) => {
+viewsRouter.get("/", async (req, res) => {
   try {
-    const products = await productManager.getProducts();
-    res.render("dashboard", { products, title: "Dashboard" });
+    const { limit = 10, page = 1 } = req.query;
+
+    const data = await Product.paginate({}, { limit, page, lean: true });
+    const products = data.docs;
+    delete data.docs;
+
+    const links = [];
+
+    for (let i = 1; i <= data.totalPages; i++) {
+      links.push({
+        number: i,
+        link: `?limit=${limit}&page=${i}`,
+      });
+    }
+
+    res.render("home", { products, links });
   } catch (error) {
-    res.status(500).render("error", { message: error.message });
+    res.status(500).json({
+      status: "error",
+      message: "No es posible obtener los productos",
+    });
   }
 });
 
-viewsRouter.get("/dashboard/detail/:productId", async (req, res) => {
+viewsRouter.get("/detail/:productId", async (req, res) => {
   try {
     const productId = req.params.productId;
-    const product = await productManager.getProductById(req.params.productId);
-    res.render("product", { product, title: "Product Detail" });
-  } catch {
+    const product = await Product.findById(productId).lean();
+
+    res.render("product", { product });
+  } catch (error) {
     res
       .status(500)
-      .render("error", { message: "Error al obtener el producto" });
+      .json({ status: "error", message: "No es posible obtener el producto" });
   }
-});
-
-viewsRouter.get("/realtimeproducts", async (req, res) => {
-  res.render("realTimeProducts");
 });
 
 export default viewsRouter;
