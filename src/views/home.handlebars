@@ -1,20 +1,5 @@
-<div>
-  <h1>Home</h1>
+<h1>Bienvenido a mi Ecommerce</h1>
 
-  {{#each products}}
+<p>Explorá nuestros productos:</p>
 
-    <div>
-      <h2>{{this.title}}</h2>
-      <p>Price: {{this.price}}</p>
-      <a href="/detail/{{this._id}}">
-        <button>Ver detalles</button>
-      </a>
-    </div>
-
-  {{/each}}
-
-  {{#each links}}
-    <a href="{{this.link}}">{{this.number}}</a>
-  {{/each}}
-
-</div>
+<a href="/products">Ver productos</a>

@@ -1,0 +1,45 @@
+<div>
+  <h1>Productos</h1>
+
+  <form method="GET" action="/products">
+    <select name="query">
+      <option value="">Todas</option>
+      <option value="Periféricos">Periféricos</option>
+      <option value="Laptops">Laptops</option>
+      <option value="Componentes">Componentes</option>
+      <option value="Webcams">Webcams</option>
+      <option value="Accesorios">Accesorios</option>
+    </select>
+
+    <select name="sort">
+      <option value="">Sin orden</option>
+      <option value="asc">Precio menor a mayor</option>
+      <option value="desc">Precio mayor a menor</option>
+    </select>
+
+    <button type="submit">Filtrar</button>
+  </form>
+
+  <hr />
+
+  {{#each products}}
+
+    <div>
+      <h2>{{this.title}}</h2>
+      <p>Price: {{this.price}}</p>
+      <a href="/detail/{{this._id}}">
+        <button>Ver detalles</button>
+      </a>
+
+      <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
+    </div>
+
+  {{/each}}
+
+  {{#each links}}
+    <a href="{{this.link}}">{{this.number}}</a>
+  {{/each}}
+
+</div>
+
+<script src="/js/products.js"></script>
