@@ -1,10 +1,10 @@
-async function addToCart(productId) {
+async function addToCart(productId, quantity = 1) {
   try {
     let cartId = localStorage.getItem("cart-id-my-ecommerce");
 
     // crear carrito si no existe
     if (!cartId) {
-      const res = await fetch("http://localhost:8080/api/carts", {
+      const res = await fetch("/api/carts", {
         method: "POST",
       });
 
@@ -15,12 +15,13 @@ async function addToCart(productId) {
     }
 
     // agregar producto
-    const response = await fetch(
-      `http://localhost:8080/api/carts/${cartId}/product/${productId}`,
-      {
-        method: "POST",
+    const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify({ quantity }),
+    });
 
     const data = await response.json();
 
@@ -32,4 +33,15 @@ async function addToCart(productId) {
   } catch (error) {
     console.error("Error:", error);
   }
+}
+
+function goToCart() {
+  const cartId = localStorage.getItem("cart-id-my-ecommerce");
+
+  if (!cartId) {
+    alert("No tenés un carrito creado todavía");
+    return;
+  }
+
+  window.location.href = `/carts/${cartId}`;
 }

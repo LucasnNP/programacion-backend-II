@@ -29,7 +29,7 @@ function decreaseQuantity() {
   }
 }
 
-async function addToCart() {
+async function addToCartDetail() {
   try {
     let cartId = localStorage.getItem("cart-id-my-ecommerce");
     if (!cartId) {

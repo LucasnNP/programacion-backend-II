@@ -1,9 +1,9 @@
 <div>
   <h1>Productos</h1>
 
-  <form method="GET" action="/products">
+  <form method="GET" action="/products" class="filters-form">
     <select name="query">
-      <option value="">Todas</option>
+      <option value="">Todas las categorías</option>
       <option value="Periféricos">Periféricos</option>
       <option value="Laptops">Laptops</option>
       <option value="Componentes">Componentes</option>
@@ -12,7 +12,7 @@
     </select>
 
     <select name="sort">
-      <option value="">Sin orden</option>
+      <option value="">Ordenar precios</option>
       <option value="asc">Precio menor a mayor</option>
       <option value="desc">Precio mayor a menor</option>
     </select>
@@ -22,24 +22,15 @@
 
   <hr />
 
+<div class="products-grid">
   {{#each products}}
-
-    <div>
-      <h2>{{this.title}}</h2>
-      <p>Price: {{this.price}}</p>
-      <a href="/detail/{{this._id}}">
-        <button>Ver detalles</button>
-      </a>
-
-      <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
-    </div>
-
+    {{> productCard this showActions=true showDetailButton=true}}
   {{/each}}
+</div>
 
+<div class="pagination">
   {{#each links}}
     <a href="{{this.link}}">{{this.number}}</a>
   {{/each}}
 
 </div>
-
-<script src="/js/products.js"></script>

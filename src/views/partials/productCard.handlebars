@@ -1,6 +1,21 @@
 <div class="product-card">
-  <img src={{this.thumbnail}} alt="" />
-  <h3>{{this.title}}</h3>
-  <p>Precio: ${{this.price}}</p>
-  <a href="/detail/{{this.id}}">Ver detalles</a>
+  <img src="{{thumbnail}}" alt="{{title}}" />
+  <h3>{{title}}</h3>
+  <p>Precio: ${{price}}</p>
+
+  {{#if showDescription}}
+    <p>{{description}}</p>
+  {{/if}}
+
+  {{#if showActions}}
+    <button onclick="addToCart('{{_id}}', 1)">
+      Agregar al carrito
+    </button>
+  {{/if}}
+
+  {{#if showDetailButton}}
+    <a href="/products/{{_id}}">
+      <button>Ver detalle</button>
+    </a>
+  {{/if}}
 </div>

@@ -8,7 +8,7 @@ const productSchema = new mongoose.Schema(
       required: true,
       trim: true,
       minLength: 5,
-      maxLength: 20,
+      maxLength: 50,
     },
     description: {
       type: String,
@@ -40,7 +40,6 @@ const productSchema = new mongoose.Schema(
 productSchema.index({ category: 1 });
 productSchema.index({ title: 1 }, { unique: true });
 productSchema.index({ description: "text" });
-productSchema.index({ code: 1 }, { unique: true });
 productSchema.index({ price: 1 });
 // Índice compuesto para consultas frecuentes por categoría y precio
 productSchema.index({ category: 1, price: -1 });

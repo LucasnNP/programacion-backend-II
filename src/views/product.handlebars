@@ -1,21 +1,29 @@
+<div
+  class="product-detail"
+  data-stock="{{product.stock}}"
+  data-id="{{product._id}}"
+>
+  <div class="product-detail">
 
-  {{#with product}}
-  <div class="product-detail" data-stock="{{stock}}" data-id="{{_id}}"></div>
-    <img src="{{thumbnail}}" alt="{{title}}" />
-    <div class="product-text">
-      <h1>{{title}}</h1>
-      <p>Precio: ${{price}}</p>
-      <p>{{description}}</p>
-
-      <div>
-        <button onclick="decreaseQuantity()">-</button>
-        <p id="quantity">1</p>
-        <button onclick="addQuantity()">+</button>
-        <button onclick="addToCart()">Agregar al carrito</button>
-      </div>
+    <!-- IZQUIERDA: CARD -->
+    <div class="detail-card">
+      {{> productCard product showDescription=true showActions=false showDetailButton=false}}
     </div>
-  </div>
-  {{/with}}
 
+    <!-- DERECHA: ACCIONES -->
+    <div class="product-actions">
+      <div class="quantity-control">
+        <button onclick="decreaseQuantity()">-</button>
+        <span id="quantity">1</span>
+        <button onclick="addQuantity()">+</button>
+      </div>
+
+      <button class="btn-add" onclick="addToCartDetail()">
+        Agregar al carrito
+      </button>
+    </div>
+
+  </div>
+</div>
 
 <script src="/js/product.js"></script>
