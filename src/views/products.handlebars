@@ -22,15 +22,15 @@
 
   <hr />
 
-<div class="products-grid">
-  {{#each products}}
-    {{> productCard this showActions=true showDetailButton=true}}
-  {{/each}}
-</div>
+  <div class="products-grid">
+    {{#each products}}
+      {{> productCard this showActions=true showDetailButton=true}}
+    {{/each}}
+  </div>
 
-<div class="pagination">
-  {{#each links}}
-    <a href="{{this.link}}">{{this.number}}</a>
-  {{/each}}
-
+  <div class="pagination">
+    {{#each links}}
+     <a href="{{this.link}}">{{this.number}}</a>
+    {{/each}}
+  </div>
 </div>

@@ -171,11 +171,10 @@ hr {
   border-radius: 12px;
   padding: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  transition: 0.2s;
+
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  margin-bottom: 16px;
+  justify-content: space-between;
 }
 
 .product-card:hover {
@@ -199,11 +198,24 @@ hr {
   color: #555;
 }
 
-.card-body {
-  flex: 1;
+.card-content {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.card-actions button {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
 }
 
 .price {
@@ -242,13 +254,6 @@ hr {
 
 .btn.secondary:hover {
   background: #d1d5db;
-}
-
-.product-card button {
-  border: none;
-  padding: 8px;
-  border-radius: 6px;
-  cursor: pointer;
 }
 
 .product-card button:hover {
