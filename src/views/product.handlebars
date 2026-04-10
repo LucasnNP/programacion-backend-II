@@ -1,16 +1,7 @@
-<div
-  class="product-detail"
-  data-stock="{{product.stock}}"
-  data-id="{{product._id}}"
->
-  <div class="product-detail">
+<div class="detail-wrapper">
+  <div class="detail-card-container" data-stock="{{product.stock}}" data-id="{{product._id}}">
+    {{> productCard product showDescription=true showActions=false showDetailButton=false}}
 
-    <!-- IZQUIERDA: CARD -->
-    <div class="detail-card">
-      {{> productCard product showDescription=true showActions=false showDetailButton=false}}
-    </div>
-
-    <!-- DERECHA: ACCIONES -->
     <div class="product-actions">
       <div class="quantity-control">
         <button onclick="decreaseQuantity()">-</button>
@@ -18,11 +9,8 @@
         <button onclick="addQuantity()">+</button>
       </div>
 
-      <button class="btn-add" onclick="addToCartDetail()">
-        Agregar al carrito
-      </button>
+      <button class="btn-add" onclick="addToCartDetail()">Agregar al carrito</button>
     </div>
-
   </div>
 </div>
 
