@@ -2,7 +2,7 @@ console.log("SCRIPT CARGADO");
 
 let count = 1;
 
-const container = document.querySelector(".product-detail");
+const container = document.querySelector(".detail-card-container");
 if (!container) {
   console.error(`No se encontró el contenedor`);
 }
