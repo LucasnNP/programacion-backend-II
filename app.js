@@ -1,11 +1,14 @@
 import express from "express";
 import productsRouter from "./src/routes/products.route.js";
 import cartRouter from "./src/routes/cart.route.js";
+import sessionsRouter from "./src/routes/sessions.route.js";
 import { engine } from "express-handlebars";
 import viewsRouter from "./src/routes/views.route.js";
 import connectMongoDB from "./src/config/db.js";
 import dotenv from "dotenv";
 import __dirname from "./dirname.js";
+import { initializePassport } from "./src/config/passport.config.js";
+import passport from "passport";
 
 //inicialización de variables de entorno
 dotenv.config({ path: __dirname + "/.env" });
@@ -29,11 +32,18 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
 
+// Inicializar Passport
+initializePassport();
+app.use(passport.initialize());
+
 // Productos
 app.use("/api/products", productsRouter);
 
 // Carritos
 app.use("/api/carts", cartRouter);
+
+// Sesiones
+app.use("/api/sessions", sessionsRouter);
 
 app.use("/", viewsRouter);
 
