@@ -1,6 +1,6 @@
 <div class="detail-wrapper">
   <div class="detail-card-container" data-stock="{{product.stock}}" data-id="{{product._id}}">
-    {{> productCard product showDescription=true showActions=false showDetailButton=false}}
+    {{> productCard product showDescription=true showActions=false showDetailButton=false user=user}}
 
     <div class="product-actions">
       <div class="quantity-control">
@@ -9,7 +9,20 @@
         <button onclick="addQuantity()">+</button>
       </div>
 
-      <button class="btn-add" onclick="addToCartDetail()">Agregar al carrito</button>
+      {{#if user}}
+        <button
+          class="btn-add"
+          onclick="addToCartDetail('{{user.cart}}', '{{product._id}}', count)"
+        >
+          Agregar al carrito
+        </button>
+      {{else}}
+        <a href="/login">
+          <button class="btn-add">
+            Iniciar sesión para comprar
+          </button>
+        </a>
+      {{/if}}
     </div>
   </div>
 </div>

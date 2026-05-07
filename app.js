@@ -11,6 +11,7 @@ import __dirname from "./dirname.js";
 import { initializePassport } from "./src/config/passport.config.js";
 import passport from "passport";
 import { verifyToken } from "./src/utils/jwt.js";
+import User from "./src/models/user.model.js";
 
 //inicialización de variables de entorno
 dotenv.config({ path: __dirname + "/.env" });
@@ -34,17 +35,21 @@ app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   res.locals.user = null;
 
   const token = req.cookies?.token;
 
   if (token) {
     try {
-      const user = verifyToken(token);
+      const decoded = verifyToken(token);
 
-      if (user) {
-        res.locals.user = user;
+      if (decoded) {
+        const user = await User.findById(decoded.id).lean();
+
+        if (user) {
+          res.locals.user = user;
+        }
       }
     } catch (error) {
       res.locals.user = null;

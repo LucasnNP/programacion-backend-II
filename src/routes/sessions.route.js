@@ -91,7 +91,7 @@ sessionsRouter.post("/login", async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: false, // Cambiar a true en producción con HTTPS
+        secure: false, // Se debe cambiar a true en producción con HTTPS
       })
       .redirect("/profile");
   } catch (error) {

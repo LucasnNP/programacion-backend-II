@@ -11,9 +11,15 @@
 
   {{#if showActions}}
     <div class="card-actions">
-      <button onclick="addToCart('{{_id}}', 1)">
-        Agregar al carrito
-      </button>
+      {{#if user}}
+        <button onclick="addToCart('{{user.cart}}', '{{this._id}}')">
+          Agregar al carrito
+        </button>
+      {{else}}
+        <a href="/login">
+          <button>Iniciar sesión para comprar</button>
+        </a>
+      {{/if}}
 
       {{#if showDetailButton}}
         <a href="/products/{{_id}}">

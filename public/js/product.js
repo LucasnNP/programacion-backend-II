@@ -4,12 +4,10 @@ let count = 1;
 
 const container = document.querySelector(".detail-card-container");
 if (!container) {
-  console.error(`No se encontró el contenedor`);
+  throw new Error("No se encontró el contenedor");
 }
 
 const stock = Number(container.dataset.stock);
-
-const productId = container.dataset.id;
 
 const quantityEl = document.getElementById("quantity");
 
@@ -29,26 +27,13 @@ function decreaseQuantity() {
   }
 }
 
-async function addToCartDetail() {
+async function addToCartDetail(cartId, productId, quantity = 1) {
   try {
-    let cartId = localStorage.getItem("cart-id-my-ecommerce");
-    if (!cartId) {
-      console.log("cartId:", cartId);
-      const response = await fetch("http://localhost:8080/api/carts", {
-        method: "POST",
-      });
-      const data = await response.json();
-      cartId = data.payload._id;
-      localStorage.setItem("cart-id-my-ecommerce", cartId);
-    }
-    const response = await fetch(
-      `http://localhost:8080/api/carts/${cartId}/product/${productId}`,
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ quantity: count }),
-      },
-    );
+    const response = await fetch(`/api/carts/${cartId}/product/${productId}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ quantity }),
+    });
 
     const data = await response.json();
     if (response.ok) {

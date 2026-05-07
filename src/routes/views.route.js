@@ -47,7 +47,14 @@ viewsRouter.get("/products", async (req, res) => {
       });
     }
 
-    res.render("products", { products, links, ...data, query, sort });
+    res.render("products", {
+      products,
+      links,
+      ...data,
+      query,
+      sort,
+      title: "Productos",
+    });
   } catch (error) {
     res.status(500).json({
       status: "error",
@@ -63,7 +70,7 @@ viewsRouter.get("/products/:productId", async (req, res) => {
 
     if (!product) return res.status(404).send("Producto no encontrado");
 
-    res.render("product", { product });
+    res.render("product", { product, title: "Detalle del producto" });
   } catch (error) {
     res
       .status(500)
@@ -81,7 +88,11 @@ viewsRouter.get("/carts/:cartId", async (req, res) => {
 
     if (!cartData) return res.status(404).send("Carrito no encontrado");
 
-    res.render("cart", { cart: cartData });
+    res.render("cart", {
+      cart: cartData,
+      user: res.locals.user,
+      title: "Tu carrito",
+    });
   } catch (error) {
     res.status(500).json({
       status: "error",
@@ -105,7 +116,6 @@ viewsRouter.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    console.log(req.user);
     res.render("profile", { title: "Perfil", user: req.user.toObject() });
   },
 );
