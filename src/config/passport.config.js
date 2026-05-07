@@ -2,9 +2,9 @@ import passport from "passport";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import User from "../models/user.model.js";
 
-const SECRET = "coderSecret";
-
 export const initializePassport = () => {
+  const SECRET = process.env.JWT_SECRET;
+
   passport.use(
     "jwt",
     new JwtStrategy(
@@ -18,7 +18,7 @@ export const initializePassport = () => {
         try {
           const user = await User.findById(jwt_payload.id);
           if (!user) {
-            return done(null, false);
+            return done(null, false, { message: "Usuario no encontrado" });
           }
           return done(null, user);
         } catch (error) {

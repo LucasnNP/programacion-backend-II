@@ -1,4 +1,5 @@
 import express from "express";
+import passport from "passport";
 import Product from "../models/product.model.js";
 import Cart from "../models/cart.model.js";
 
@@ -88,5 +89,25 @@ viewsRouter.get("/carts/:cartId", async (req, res) => {
     });
   }
 });
+
+// Vista registro
+viewsRouter.get("/register", (req, res) => {
+  res.render("register", { title: "Registro" });
+});
+
+// Vista login
+viewsRouter.get("/login", (req, res) => {
+  res.render("login", { title: "Login" });
+});
+
+// Vista perfil
+viewsRouter.get(
+  "/profile",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    console.log(req.user);
+    res.render("profile", { title: "Perfil", user: req.user.toObject() });
+  },
+);
 
 export default viewsRouter;

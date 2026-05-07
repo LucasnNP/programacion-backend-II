@@ -3,8 +3,14 @@ import User from "../models/user.model.js";
 import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { generateToken } from "../utils/jwt.js";
 import passport from "passport";
+import Cart from "../models/cart.model.js";
 
 const sessionsRouter = Router();
+
+sessionsRouter.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/login");
+});
 
 sessionsRouter.post("/register", async (req, res) => {
   try {
@@ -29,6 +35,9 @@ sessionsRouter.post("/register", async (req, res) => {
     //hash de la contraseña
     const hashedPassword = createHash(password);
 
+    // Crear un carrito para el nuevo usuario
+    const newCart = await Cart.create({ products: [] });
+
     // Crear el nuevo usuario
     const newUser = await User.create({
       first_name,
@@ -36,16 +45,10 @@ sessionsRouter.post("/register", async (req, res) => {
       email,
       age,
       password: hashedPassword,
+      cart: newCart._id,
     });
 
-    // Evitar enviar la contraseña en la respuesta
-    const { password: _, ...userSafe } = newUser._doc;
-
-    res.status(201).json({
-      status: "success",
-      message: "Usuario registrado correctamente",
-      user: userSafe,
-    });
+    res.redirect("/login");
   } catch (error) {
     res
       .status(500)
@@ -85,16 +88,12 @@ sessionsRouter.post("/login", async (req, res) => {
     const token = generateToken(user);
 
     // Enviar token como cookie segura
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: false, // Cambiar a true en producción con HTTPS
-    });
-
-    res.json({
-      status: "success",
-      message: "Login exitoso",
-      user: { ...user._doc, password: undefined }, // Evitar enviar la contraseña
-    });
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false, // Cambiar a true en producción con HTTPS
+      })
+      .redirect("/profile");
   } catch (error) {
     res
       .status(500)

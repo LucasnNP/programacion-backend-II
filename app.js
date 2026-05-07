@@ -1,4 +1,5 @@
 import express from "express";
+import cookieParser from "cookie-parser";
 import productsRouter from "./src/routes/products.route.js";
 import cartRouter from "./src/routes/cart.route.js";
 import sessionsRouter from "./src/routes/sessions.route.js";
@@ -9,6 +10,7 @@ import dotenv from "dotenv";
 import __dirname from "./dirname.js";
 import { initializePassport } from "./src/config/passport.config.js";
 import passport from "passport";
+import { verifyToken } from "./src/utils/jwt.js";
 
 //inicialización de variables de entorno
 dotenv.config({ path: __dirname + "/.env" });
@@ -21,20 +23,41 @@ connectMongoDB();
 // Middleware para poder recibir JSON
 app.use(express.json());
 
+// Middleware para poder recibir datos de formularios y parsearlos correctamente
+app.use(express.urlencoded({ extended: true }));
+
 // Middleware para servir archivos estáticos desde la carpeta "public"
 app.use(express.static(__dirname + "/public"));
 
-// Middleware para poder recibir datos de formularios y parsearlos correctamente
-app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+initializePassport();
+app.use(passport.initialize());
+
+app.use((req, res, next) => {
+  res.locals.user = null;
+
+  const token = req.cookies?.token;
+
+  if (token) {
+    try {
+      const user = verifyToken(token);
+
+      if (user) {
+        res.locals.user = user;
+      }
+    } catch (error) {
+      res.locals.user = null;
+    }
+  }
+
+  next();
+});
 
 // Handlebars configuration
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/src/views");
-
-// Inicializar Passport
-initializePassport();
-app.use(passport.initialize());
 
 // Productos
 app.use("/api/products", productsRouter);
