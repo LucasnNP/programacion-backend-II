@@ -35,6 +35,7 @@ app.use(cookieParser());
 initializePassport();
 app.use(passport.initialize());
 
+// Middleware para verificar el token en cada solicitud y agregar el usuario a res.locals
 app.use(async (req, res, next) => {
   res.locals.user = null;
 

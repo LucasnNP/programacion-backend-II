@@ -19,11 +19,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      //verificar que la contraseña tenga al menos 8 caracteres, una mayúscula, una minúscula y un número
-      match: [
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{8,}$/,
-        "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número",
-      ],
     },
     cart: { type: mongoose.Schema.Types.ObjectId, ref: "Cart" },
     role: { type: String, default: "user", enum: ["user", "admin"] },

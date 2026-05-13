@@ -78,28 +78,32 @@ viewsRouter.get("/products/:productId", async (req, res) => {
   }
 });
 
-viewsRouter.get("/carts/:cartId", async (req, res) => {
-  try {
-    const { cartId } = req.params;
+viewsRouter.get(
+  "/carts/:cartId",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { cartId } = req.params;
 
-    const cartData = await Cart.findById(cartId)
-      .populate("products.product")
-      .lean();
+      const cartData = await Cart.findById(cartId)
+        .populate("products.product")
+        .lean();
 
-    if (!cartData) return res.status(404).send("Carrito no encontrado");
+      if (!cartData) return res.status(404).send("Carrito no encontrado");
 
-    res.render("cart", {
-      cart: cartData,
-      user: res.locals.user,
-      title: "Tu carrito",
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: "No es posible obtener el carrito",
-    });
-  }
-});
+      res.render("cart", {
+        cart: cartData,
+        user: res.locals.user,
+        title: "Tu carrito",
+      });
+    } catch (error) {
+      res.status(500).json({
+        status: "error",
+        message: "No es posible obtener el carrito",
+      });
+    }
+  },
+);
 
 // Vista registro
 viewsRouter.get("/register", (req, res) => {

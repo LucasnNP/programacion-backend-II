@@ -12,7 +12,6 @@ const stock = Number(container.dataset.stock);
 const quantityEl = document.getElementById("quantity");
 
 function addQuantity() {
-  console.log("click +");
   if (count < stock) {
     count++;
     quantityEl.textContent = count;
@@ -20,7 +19,6 @@ function addQuantity() {
 }
 
 function decreaseQuantity() {
-  console.log("click -");
   if (count > 1) {
     count--;
     quantityEl.textContent = count;
