@@ -4,6 +4,7 @@ import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { generateToken } from "../utils/jwt.js";
 import passport from "passport";
 import Cart from "../models/cart.model.js";
+import UserDTO from "../dto/user.dto.js";
 
 const sessionsRouter = Router();
 
@@ -105,15 +106,11 @@ sessionsRouter.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    const userDTO = new UserDTO(req.user);
+
     res.json({
       status: "success",
-      user: {
-        id: req.user._id,
-        first_name: req.user.first_name,
-        last_name: req.user.last_name,
-        email: req.user.email,
-        role: req.user.role,
-      },
+      payload: userDTO,
     });
   },
 );

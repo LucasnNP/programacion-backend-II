@@ -1,5 +1,7 @@
 import express from "express";
 import Product from "../models/product.model.js";
+import passport from "passport";
+import { authorization } from "../middlewares/authorization.js";
 
 const productsRouter = express.Router();
 
@@ -48,59 +50,78 @@ productsRouter.get("/:productId", async (req, res) => {
 });
 
 // Crear un nuevo producto
-productsRouter.post("/", async (req, res) => {
-  try {
-    const newProduct = req.body;
+productsRouter.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  authorization("admin"),
+  async (req, res) => {
+    try {
+      const newProduct = req.body;
 
-    const product = await Product.create(newProduct);
+      const product = await Product.create(newProduct);
 
-    res.status(201).json({ status: "success", payload: product });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ status: "error", message: "error al agregar el producto" });
-  }
-});
+      res.status(201).json({ status: "success", payload: product });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ status: "error", message: "error al agregar el producto" });
+    }
+  },
+);
 
 // Actualizar un producto por ID
-productsRouter.put("/:productId", async (req, res) => {
-  try {
-    const productId = req.params.productId;
-    const updates = req.body;
+productsRouter.put(
+  "/:productId",
+  passport.authenticate("jwt", { session: false }),
+  authorization("admin"),
+  async (req, res) => {
+    try {
+      const productId = req.params.productId;
+      const updates = req.body;
 
-    const updatedProduct = await Product.findByIdAndUpdate(productId, updates, {
-      new: true,
-      runValidators: true,
-    }); // se pasa el objeto de configuración para que me llegue la info del producto actualizado y valide los datos según el esquema definido en el modelo
-    if (!updatedProduct)
-      return res
-        .status(404)
-        .json({ status: "error", message: "producto no encontrado" });
-    res.status(200).json({ status: "success", payload: updatedProduct });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ status: "error", message: "error al actualizar el producto" });
-  }
-});
+      const updatedProduct = await Product.findByIdAndUpdate(
+        productId,
+        updates,
+        {
+          new: true,
+          runValidators: true,
+        },
+      ); // se pasa el objeto de configuración para que me llegue la info del producto actualizado y valide los datos según el esquema definido en el modelo
+      if (!updatedProduct)
+        return res
+          .status(404)
+          .json({ status: "error", message: "producto no encontrado" });
+      res.status(200).json({ status: "success", payload: updatedProduct });
+    } catch (error) {
+      res
+        .status(500)
+        .json({ status: "error", message: "error al actualizar el producto" });
+    }
+  },
+);
 
 // Eliminar un producto por ID
-productsRouter.delete("/:productId", async (req, res) => {
-  try {
-    const productId = req.params.productId;
+productsRouter.delete(
+  "/:productId",
+  passport.authenticate("jwt", { session: false }),
+  authorization("admin"),
+  async (req, res) => {
+    try {
+      const productId = req.params.productId;
 
-    const deletedProduct = await Product.findByIdAndDelete(productId);
-    if (!deletedProduct)
-      return res
-        .status(404)
-        .json({ status: "error", message: "producto no encontrado" });
+      const deletedProduct = await Product.findByIdAndDelete(productId);
+      if (!deletedProduct)
+        return res
+          .status(404)
+          .json({ status: "error", message: "producto no encontrado" });
 
-    res.status(204).send();
-  } catch (error) {
-    res
-      .status(500)
-      .json({ status: "error", message: "error al eliminar el producto" });
-  }
-});
+      res.status(204).send();
+    } catch (error) {
+      res
+        .status(500)
+        .json({ status: "error", message: "error al eliminar el producto" });
+    }
+  },
+);
 
 export default productsRouter;

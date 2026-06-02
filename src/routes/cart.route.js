@@ -30,66 +30,67 @@ cartRouter.get("/:cartId", async (req, res) => {
 
     res.status(200).json({ status: "success", payload: cartData.products });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        status: "error",
-        message: "Error al obtener los productos del carrito",
-      });
+    res.status(500).json({
+      status: "error",
+      message: "Error al obtener los productos del carrito",
+    });
   }
 });
 
 // Agregar un producto a un carrito por ID
-cartRouter.post("/:cartId/product/:productId", async (req, res) => {
-  try {
-    const { cartId, productId } = req.params;
-    const { quantity } = req.body;
+cartRouter.post(
+  "/:cartId/product/:productId",
+  passport.authenticate("jwt", { session: false }),
+  authorization("user"),
+  async (req, res) => {
+    try {
+      const { cartId, productId } = req.params;
+      const { quantity } = req.body;
 
-    if (!Number.isInteger(quantity) || quantity <= 0)
-      return res
-        .status(400)
-        .json({
+      if (!Number.isInteger(quantity) || quantity <= 0)
+        return res.status(400).json({
           status: "error",
           message:
             "La cantidad debe ser un número entero positivo mayor a cero",
         });
 
-    //verificar si el producto a agregar existe
-    const productExists = await Product.findById(productId).lean(); // va el lean porque solo quiero leer
-    if (!productExists)
-      return res
-        .status(404)
-        .json({ status: "error", message: "Producto no encontrado" });
+      //verificar si el producto a agregar existe
+      const productExists = await Product.findById(productId).lean(); // va el lean porque solo quiero leer
+      if (!productExists)
+        return res
+          .status(404)
+          .json({ status: "error", message: "Producto no encontrado" });
 
-    //verificar si el carrito existe
-    const cart = await Cart.findById(cartId); // Sin lean porque voy a modificar el carrito, necesito el documento completo para poder guardar los cambios (objeto inteligente de mongoose)
-    if (!cart)
-      return res
-        .status(404)
-        .json({ status: "error", message: "Carrito no encontrado" });
+      //verificar si el carrito existe
+      const cart = await Cart.findById(cartId); // Sin lean porque voy a modificar el carrito, necesito el documento completo para poder guardar los cambios (objeto inteligente de mongoose)
+      if (!cart)
+        return res
+          .status(404)
+          .json({ status: "error", message: "Carrito no encontrado" });
 
-    //verificar si el producto ya está en el carrito
-    const productIndex = cart.products.findIndex((p) => p.product == productId);
-    if (productIndex !== -1) {
-      //si el producto ya está en el carrito, actualizar la cantidad
-      cart.products[productIndex].quantity += quantity || 1;
-    } else {
-      //si el producto no está en el carrito, agregarlo
-      cart.products.push({ product: productId, quantity: quantity || 1 });
-    }
+      //verificar si el producto ya está en el carrito
+      const productIndex = cart.products.findIndex(
+        (p) => p.product == productId,
+      );
+      if (productIndex !== -1) {
+        //si el producto ya está en el carrito, actualizar la cantidad
+        cart.products[productIndex].quantity += quantity || 1;
+      } else {
+        //si el producto no está en el carrito, agregarlo
+        cart.products.push({ product: productId, quantity: quantity || 1 });
+      }
 
-    //guardar los cambios en la base de datos
-    const updatedCart = await cart.save();
-    res.status(200).json({ status: "success", payload: updatedCart });
-  } catch (error) {
-    res
-      .status(500)
-      .json({
+      //guardar los cambios en la base de datos
+      const updatedCart = await cart.save();
+      res.status(200).json({ status: "success", payload: updatedCart });
+    } catch (error) {
+      res.status(500).json({
         status: "error",
         message: "Error al agregar el producto al carrito",
       });
-  }
-});
+    }
+  },
+);
 
 // Actualizar la cantidad de un producto en un carrito por ID
 cartRouter.put("/:cartId/product/:productId", async (req, res) => {
