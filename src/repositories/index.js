@@ -1,4 +1,7 @@
-import UserDAO from "../dao/UserDAO.js";
 import UserRespository from "./UserRepository.js";
+import CartRepository from "./CartRepository.js";
+import ProductRepository from "./ProductRepository.js";
 
-export const userRepository = new UserRepository(new UserDAO());
+export const userRepository = new UserRepository();
+export const cartRepository = new CartRepository();
+export const productRepository = new ProductRepository();

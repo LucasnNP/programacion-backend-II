@@ -2,6 +2,7 @@ import express from "express";
 import passport from "passport";
 import Product from "../models/product.model.js";
 import Cart from "../models/cart.model.js";
+import { authorization } from "../middlewares/authorization.js";
 
 const viewsRouter = express.Router();
 
@@ -119,6 +120,7 @@ viewsRouter.get("/login", (req, res) => {
 viewsRouter.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),
+  authorization("user", "admin"),
   (req, res) => {
     res.render("profile", { title: "Perfil", user: req.user.toObject() });
   },

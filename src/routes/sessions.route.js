@@ -4,7 +4,13 @@ import { createHash, isValidPassword } from "../utils/bcrypt.js";
 import { generateToken } from "../utils/jwt.js";
 import passport from "passport";
 import Cart from "../models/cart.model.js";
-import UserDTO from "../dto/user.dto.js";
+import UserCurrentDTO from "../dto/UserCurrentDTO.js";
+import {
+  register,
+  login,
+  logout,
+  current,
+} from "../controllers/sessions.controller.js";
 
 const sessionsRouter = Router();
 
@@ -105,14 +111,7 @@ sessionsRouter.post("/login", async (req, res) => {
 sessionsRouter.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
-    const userDTO = new UserDTO(req.user);
-
-    res.json({
-      status: "success",
-      payload: userDTO,
-    });
-  },
+  current,
 );
 
 export default sessionsRouter;

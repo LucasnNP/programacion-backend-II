@@ -1,4 +1,5 @@
 import { registerUser, loginUser } from "../services/sessions.service.js";
+import UserCurrentDTO from "../dto/UserCurrentDTO.js";
 
 export const register = async (req, res) => {
   try {
@@ -27,4 +28,17 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   res.clearCookie("token");
   res.redirect("/login");
+};
+
+export const current = async (req, res) => {
+  try {
+    const userDTO = new UserCurrentDTO(req.user);
+
+    res.json({
+      status: "success",
+      payload: userDTO,
+    });
+  } catch (error) {
+    res.status(500).json({ status: "error", message: error.message });
+  }
 };

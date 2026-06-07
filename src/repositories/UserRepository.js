@@ -1,17 +1,36 @@
+import UserDAO from "../dao/UserDAO.js";
+
 export default class UserRepository {
-  constructor(dao) {
-    this.dao = dao;
+  constructor() {
+    this.dao = new UserDAO();
   }
 
-  getUserByEmail(email) {
+  getByEmail(email) {
     return this.dao.getByEmail(email);
   }
 
-  getUserById(id) {
+  getById(id) {
     return this.dao.getById(id);
   }
 
-  createUser(data) {
-    return this.dao.create(data);
+  create(userData) {
+    return this.dao.create(userData);
+  }
+
+  update(id, data) {
+    return this.dao.update(id, data);
+  }
+
+  delete(id) {
+    return this.dao.delete(id);
+  }
+
+  getCurrentUserDTO(user) {
+    return {
+      id: user._id,
+      name: `${user.first_name} ${user.last_name}`,
+      email: user.email,
+      role: user.role,
+    };
   }
 }
