@@ -1,8 +1,10 @@
 import express from "express";
 import Cart from "../models/cart.model.js";
 import Product from "../models/product.model.js";
+import passport from "passport";
 import { authorization } from "../middlewares/authorization.js";
 import { validateCartOwner } from "../middlewares/cartOwner.js";
+import { purchase } from "../controllers/purchase.controller.js";
 
 const cartRouter = express.Router();
 
@@ -197,6 +199,15 @@ cartRouter.delete(
       });
     }
   },
+);
+
+// Comprar carrito
+cartRouter.post(
+  "/:cartId/purchase",
+  passport.authenticate("jwt", { session: false }),
+  authorization("user"),
+  validateCartOwner,
+  purchase,
 );
 
 export default cartRouter;

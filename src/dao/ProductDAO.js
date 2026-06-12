@@ -17,6 +17,10 @@ export default class ProductDAO {
     return await Product.findByIdAndUpdate(id, updateData, { new: true });
   }
 
+  async updateStock(id, stock) {
+    return await Product.findByIdAndUpdate(id, { stock }, { new: true });
+  }
+
   async delete(id) {
     return await Product.findByIdAndDelete(id);
   }

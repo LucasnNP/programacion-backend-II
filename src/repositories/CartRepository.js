@@ -13,6 +13,10 @@ export default class CartRepository {
     return this.dao.getById(id);
   }
 
+  getByIdWithProducts(id) {
+    return this.dao.getByIdWithProducts(id);
+  }
+
   update(id, data) {
     return this.dao.update(id, data);
   }
