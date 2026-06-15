@@ -24,4 +24,16 @@ export default class CartRepository {
   delete(id) {
     return this.dao.delete(id);
   }
+
+  save(cart) {
+    return this.dao.save(cart);
+  }
+
+  removeProduct(cartId, productId) {
+    return this.dao.removeProduct(cartId, productId);
+  }
+
+  clearCart(cartId) {
+    return this.dao.clearCart(cartId);
+  }
 }

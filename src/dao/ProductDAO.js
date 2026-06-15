@@ -5,6 +5,10 @@ export default class ProductDAO {
     return await Product.findById(id);
   }
 
+  async getByCode(code) {
+    return await Product.findOne({ code });
+  }
+
   async getAll(filter = {}, options = {}) {
     return await Product.paginate(filter, options);
   }

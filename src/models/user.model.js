@@ -2,20 +2,21 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
-    first_name: { type: String, required: true },
-    last_name: { type: String, required: true },
+    first_name: { type: String, required: true, trim: true },
+    last_name: { type: String, required: true, trim: true },
     email: {
       type: String,
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
       //verificar formato de correo con expresión regular
       match: [
         /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
         "Por favor ingrese un correo electrónico válido",
       ],
     },
-    age: { type: Number, required: true },
+    age: { type: Number, required: true, min: 18 },
     password: {
       type: String,
       required: true,

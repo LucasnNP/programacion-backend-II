@@ -1,12 +1,12 @@
 import { randomUUID } from "crypto";
 
-import CartRepository from "../repositories/CartRepository";
+import CartRepository from "../repositories/CartRepository.js";
 import ProductRepository from "../repositories/ProductRepository.js";
 import TicketRepository from "../repositories/TicketRepository.js";
 
 const cartRepository = new CartRepository();
 const productRepository = new ProductRepository();
-const ticketRespository = new TicketRepository();
+const ticketRepository = new TicketRepository();
 
 export const purchaseCart = async (cartId, purchaseEmail) => {
   const cart = await cartRepository.getByIdWithProducts(cartId);
@@ -42,7 +42,7 @@ export const purchaseCart = async (cartId, purchaseEmail) => {
     );
   }
 
-  const ticket = await ticketRespository.create({
+  const ticket = await ticketRepository.create({
     code: randomUUID(),
     amount: totalAmount,
     purchaser: purchaseEmail,

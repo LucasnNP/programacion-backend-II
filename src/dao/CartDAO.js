@@ -20,4 +20,24 @@ export default class CartDAO {
   async delete(id) {
     return await Cart.findByIdAndDelete(id);
   }
+
+  async save(cart) {
+    return await cart.save();
+  }
+
+  async removeProduct(cartId, productId) {
+    return await Cart.findByIdAndUpdate(
+      cartId,
+      { $pull: { products: { product: productId } } },
+      { new: true },
+    );
+  }
+
+  async clearCart(cartId) {
+    return await Cart.findByIdAndUpdate(
+      cartId,
+      { $set: { products: [] } },
+      { new: true },
+    );
+  }
 }

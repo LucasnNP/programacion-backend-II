@@ -9,6 +9,10 @@ export default class ProductRepository {
     return this.dao.getById(id);
   }
 
+  getByCode(code) {
+    return this.dao.getByCode(code);
+  }
+
   getAll(filter, options) {
     return this.dao.getAll(filter, options);
   }
