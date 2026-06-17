@@ -3,6 +3,7 @@ import {
   deleteProduct,
   getProductById,
   getProducts,
+  toggleProductStatus,
   updateProduct,
 } from "../services/product.service.js";
 
@@ -58,6 +59,16 @@ export const updateExistingProduct = async (req, res) => {
     res.status(200).json({ status: "success", payload: product });
   } catch (error) {
     res.status(400).json({ status: "error", message: error.message });
+  }
+};
+
+export const toggleStatus = async (req, res) => {
+  try {
+    const product = await toggleProductStatus(req.params.productId);
+
+    res.status(200).json({ status: "success", payload: product });
+  } catch (error) {
+    res.status(404).json({ status: "error", message: error.message });
   }
 };
 

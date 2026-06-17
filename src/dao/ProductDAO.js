@@ -5,6 +5,11 @@ export default class ProductDAO {
     return await Product.findById(id);
   }
 
+  //metodo para las vistas
+  async getByIdLean(id) {
+    return await Product.findById(id).lean();
+  }
+
   async getByCode(code) {
     return await Product.findOne({ code });
   }
@@ -23,6 +28,16 @@ export default class ProductDAO {
 
   async updateStock(id, stock) {
     return await Product.findByIdAndUpdate(id, { stock }, { new: true });
+  }
+
+  async toggleStatus(id) {
+    const product = await Product.findById(id);
+
+    if (!product) return null;
+
+    product.status = !product.status;
+
+    return await product.save();
   }
 
   async delete(id) {

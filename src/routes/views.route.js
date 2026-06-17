@@ -1,122 +1,54 @@
 import express from "express";
 import passport from "passport";
-import Product from "../models/product.model.js";
-import Cart from "../models/cart.model.js";
 import { authorization } from "../middlewares/authorization.js";
+import {
+  renderAdmin,
+  renderCart,
+  renderProduct,
+  renderProducts,
+} from "../controllers/views.controller.js";
 
 const viewsRouter = express.Router();
 
+// Vista home queda como está ya que no consulta db
 viewsRouter.get("/", async (req, res) => {
   res.render("home", {
     title: "Inicio",
   });
 });
 
-viewsRouter.get("/products", async (req, res) => {
-  try {
-    const { limit = 10, page = 1, query, sort } = req.query;
+// Vista de productos
+viewsRouter.get("/products", renderProducts);
 
-    //filtro
-    let filter = {};
-    if (query) {
-      if (query === "true" || query === "false") {
-        filter = { status: query === "true" };
-      } else {
-        filter = { category: query };
-      }
-    }
+// Vista de producto individual
+viewsRouter.get("/products/:productId", renderProduct);
 
-    //ordenamiento
-    const sortOption = sort ? { price: sort === "asc" ? 1 : -1 } : {};
-
-    const data = await Product.paginate(filter, {
-      limit: Number(limit),
-      page: Number(page),
-      sort: sortOption,
-      lean: true,
-    }); //en caso de que limit y page vengan como strings, se convierten a números para evitar problemas con la paginación
-
-    const products = data.docs;
-    delete data.docs;
-
-    const links = [];
-
-    for (let i = 1; i <= data.totalPages; i++) {
-      links.push({
-        number: i,
-        link: `?limit=${limit}&page=${i}&query=${query || ""}&sort=${sort || ""}`,
-      });
-    }
-
-    res.render("products", {
-      products,
-      links,
-      ...data,
-      query,
-      sort,
-      title: "Productos",
-    });
-  } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: "No es posible obtener los productos",
-    });
-  }
-});
-
-viewsRouter.get("/products/:productId", async (req, res) => {
-  try {
-    const productId = req.params.productId;
-    const product = await Product.findById(productId).lean();
-
-    if (!product) return res.status(404).send("Producto no encontrado");
-
-    res.render("product", { product, title: "Detalle del producto" });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ status: "error", message: "No es posible obtener el producto" });
-  }
-});
-
+// Vista de carrito
 viewsRouter.get(
   "/carts/:cartId",
   passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    try {
-      const { cartId } = req.params;
-
-      const cartData = await Cart.findById(cartId)
-        .populate("products.product")
-        .lean();
-
-      if (!cartData) return res.status(404).send("Carrito no encontrado");
-
-      res.render("cart", {
-        cart: cartData,
-        user: res.locals.user,
-        title: "Tu carrito",
-      });
-    } catch (error) {
-      res.status(500).json({
-        status: "error",
-        message: "No es posible obtener el carrito",
-      });
-    }
-  },
+  renderCart,
 );
 
-// Vista registro
+// Vista de administración
+viewsRouter.get(
+  "/admin",
+  passport.authenticate("jwt", { session: false }),
+  authorization("admin"),
+  renderAdmin,
+);
+
+// Vista registro queda como está ya que no consulta db
 viewsRouter.get("/register", (req, res) => {
   res.render("register", { title: "Registro" });
 });
 
-// Vista login
+// Vista login queda como está ya que no consulta db
 viewsRouter.get("/login", (req, res) => {
   res.render("login", { title: "Login" });
 });
 
-// Vista perfil
+// Vista perfil queda como está ya que no consulta db
 viewsRouter.get(
   "/profile",
   passport.authenticate("jwt", { session: false }),

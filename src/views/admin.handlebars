@@ -1,0 +1,94 @@
+<h1>Panel de Administración</h1>
+
+<p>
+  Bienvenido
+  {{user.first_name}}
+  {{user.last_name}}
+</p>
+
+<hr />
+
+<h2>Alta de nuevo producto</h2>
+
+<form id="createProductform">
+  <input type="text" name="title" placeholder="Título" required />
+  <input type="text" name="description" placeholder="Descripción" required />
+  <input type="text" name="code" placeholder="Código" required />
+  <input type="number" name="price" placeholder="Precio" required />
+  <input type="number" name="stock" placeholder="Stock" required />
+  <select name="category" required>
+    <option value="">Seleccione categoría</option>
+
+    <option value="Periféricos">
+      Periféricos
+    </option>
+
+    <option value="Laptops">
+      Laptops
+    </option>
+
+    <option value="Componentes">
+      Componentes
+    </option>
+
+    <option value="Webcams">
+      Webcams
+    </option>
+
+    <option value="Accesorios">
+      Accesorios
+    </option>
+  </select>
+
+  <button type="submit">
+    Crear producto
+  </button>
+
+</form>
+
+<hr />
+
+<h2>Productos</h2>
+
+<table border="1" cellpadding="10">
+  <thead>
+    <tr>
+      <th>Título</th>
+      <th>Precio</th>
+      <th>Stock</th>
+      <th>Categoría</th>
+      <th>Estado</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {{#each products}}
+      <tr>
+        <td>{{this.title}}</td>
+        <td>${{this.price}}</td>
+        <td>{{this.stock}}</td>
+        <td>{{this.category}}</td>
+
+        <td>
+          {{#if this.status}}
+            Activo
+          {{else}}
+            Inactivo
+          {{/if}}
+        </td>
+
+        <td>
+          <button>Editar</button>
+          <button>Eliminar</button>
+
+          {{#if this.status}}
+            <button>Desactivar</button>
+          {{else}}
+            <button>Activar</button>
+          {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

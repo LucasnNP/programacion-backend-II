@@ -5,6 +5,7 @@ import {
   createNewProduct,
   updateExistingProduct,
   deleteExistingProduct,
+  toggleStatus,
 } from "../controllers/product.controller.js";
 import passport from "passport";
 import { authorization } from "../middlewares/authorization.js";
@@ -33,6 +34,14 @@ productsRouter.put(
   authorization("admin"),
   validateObjectId("productId"),
   updateExistingProduct,
+);
+
+// Activar o desactivar un producto por ID
+productsRouter.patch(
+  "/:productId/status",
+  passport.authenticate("jwt", { session: false }),
+  authorization("admin"),
+  toggleStatus,
 );
 
 // Eliminar un producto por ID

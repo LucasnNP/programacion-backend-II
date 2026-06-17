@@ -9,6 +9,10 @@ export default class ProductRepository {
     return this.dao.getById(id);
   }
 
+  getByIdLean(id) {
+    return this.dao.getByIdLean(id);
+  }
+
   getByCode(code) {
     return this.dao.getByCode(code);
   }
@@ -27,6 +31,10 @@ export default class ProductRepository {
 
   updateStock(id, stock) {
     return this.dao.updateStock(id, stock);
+  }
+
+  toggleStatus(id) {
+    return this.dao.toggleStatus(id);
   }
 
   delete(id) {
