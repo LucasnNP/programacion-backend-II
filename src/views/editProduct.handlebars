@@ -1,0 +1,45 @@
+<h1>Editar producto</h1>
+
+<form id="editProductForm">
+
+  <input
+    type="text"
+    name="title"
+    value="{{product.title}}"
+    required
+  />
+
+  <textarea
+    name="description"
+    required
+  >{{product.description}}</textarea>
+
+  <input
+    type="number"
+    name="price"
+    value="{{product.price}}"
+    required
+  />
+
+  <input
+    type="number"
+    name="stock"
+    value="{{product.stock}}"
+    required
+  />
+
+  <select name="category">
+    {{#each categories}}
+        <option value="{{this.name}}" {{#if this.selected}}selected{{/if}}>
+        {{this.name}}
+        </option>
+    {{/each}}
+  </select>
+
+  <button type="submit">
+    Guardar cambios
+  </button>
+
+</form>
+
+<script src="/js/editProduct.js"></script>

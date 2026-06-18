@@ -9,6 +9,7 @@ import {
 } from "../controllers/product.controller.js";
 import passport from "passport";
 import { authorization } from "../middlewares/authorization.js";
+import uploaderMulter from "../utils/multer.config.js";
 import { validateObjectId } from "../middlewares/validateObjectId.js";
 
 const productsRouter = express.Router();
@@ -24,6 +25,7 @@ productsRouter.post(
   "/",
   passport.authenticate("jwt", { session: false }),
   authorization("admin"),
+  uploaderMulter.single("thumbnail"),
   createNewProduct,
 );
 

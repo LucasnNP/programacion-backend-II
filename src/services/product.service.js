@@ -16,6 +16,16 @@ export const getProductById = async (id) => {
   return product;
 };
 
+export const getProductViewData = async (productId) => {
+  const product = await productRepository.getByIdLean(productId);
+
+  if (!product) {
+    throw new Error("Producto no encontrado");
+  }
+
+  return product;
+};
+
 export const createProduct = async (productData) => {
   const { title, description, code, price, stock, category } = productData;
 
@@ -65,6 +75,13 @@ export const updateProduct = async (id, updateData) => {
 
   if (updateData.stock !== undefined && updateData.stock < 0) {
     throw new Error("El stock no puede ser negativo");
+  }
+
+  if (
+    updateData.status !== undefined &&
+    typeof updateData.status !== "boolean"
+  ) {
+    throw new Error("El estado debe ser verdadero o falso");
   }
 
   const updatedProduct = await productRepository.update(id, updateData);

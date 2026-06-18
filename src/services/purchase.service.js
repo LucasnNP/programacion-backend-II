@@ -32,7 +32,11 @@ export const purchaseCart = async (cartId, purchaseEmail) => {
 
       purchasedProducts.push(item);
     } else {
-      productsWithoutStock.push(product._id);
+      productsWithoutStock.push({
+        id: product._id,
+        title: product.title,
+        stock: product.stock,
+      });
     }
   }
 

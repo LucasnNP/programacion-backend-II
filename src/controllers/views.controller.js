@@ -10,7 +10,7 @@ export const renderProducts = async (req, res) => {
     const { limit = 10, page = 1, query, sort } = req.query;
 
     //filtro
-    let filter = {};
+    let filter = { status: true };
 
     if (query) {
       if (query === "true" || query === "false") {

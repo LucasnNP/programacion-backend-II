@@ -10,6 +10,10 @@ export default class CartDAO {
   }
 
   async getByIdWithProducts(id) {
+    return await Cart.findById(id).populate("products.product");
+  }
+
+  async getByIdWithProductsLean(id) {
     return await Cart.findById(id).populate("products.product").lean();
   }
 

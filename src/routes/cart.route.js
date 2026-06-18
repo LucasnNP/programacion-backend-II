@@ -37,9 +37,9 @@ cartRouter.put(
   "/:cartId/product/:productId",
   passport.authenticate("jwt", { session: false }),
   authorization("user"),
-  validateCartOwner,
   validateObjectId("cartId"),
   validateObjectId("productId"),
+  validateCartOwner,
   updateQuantity,
 );
 
@@ -48,9 +48,9 @@ cartRouter.delete(
   "/:cartId/product/:productId",
   passport.authenticate("jwt", { session: false }),
   authorization("user"),
-  validateCartOwner,
   validateObjectId("cartId"),
   validateObjectId("productId"),
+  validateCartOwner,
   removeProduct,
 );
 
@@ -59,8 +59,8 @@ cartRouter.delete(
   "/:cartId",
   passport.authenticate("jwt", { session: false }),
   authorization("user"),
-  validateCartOwner,
   validateObjectId("cartId"),
+  validateCartOwner,
   emptyCart,
 );
 

@@ -7,6 +7,7 @@ import {
   renderProduct,
   renderProducts,
 } from "../controllers/views.controller.js";
+import { renderEditProduct } from "../controllers/product.controller.js";
 
 const viewsRouter = express.Router();
 
@@ -22,6 +23,13 @@ viewsRouter.get("/products", renderProducts);
 
 // Vista de producto individual
 viewsRouter.get("/products/:productId", renderProduct);
+
+viewsRouter.get(
+  "/admin/edit/:productId",
+  passport.authenticate("jwt", { session: false }),
+  authorization("admin"),
+  renderEditProduct,
+);
 
 // Vista de carrito
 viewsRouter.get(

@@ -3,9 +3,12 @@ import {
   deleteProduct,
   getProductById,
   getProducts,
+  getProductViewData,
   toggleProductStatus,
   updateProduct,
 } from "../services/product.service.js";
+import fs from "fs";
+import path from "path";
 
 export const getAllProducts = async (req, res) => {
   try {
@@ -14,7 +17,13 @@ export const getAllProducts = async (req, res) => {
     const limitNum = parseInt(limit);
     const pageNum = parseInt(page);
 
-    const filter = category ? { category } : {};
+    const filter = {
+      status: true,
+    };
+
+    if (category) {
+      filter.category = category;
+    }
 
     const data = await getProducts(filter, {
       limit: limitNum,
@@ -26,9 +35,16 @@ export const getAllProducts = async (req, res) => {
     const products = data.docs;
     delete data.docs;
 
-    res.status(200).json({ status: "success", payload: products, ...data });
+    res.status(200).json({
+      status: "success",
+      payload: products,
+      ...data,
+    });
   } catch (error) {
-    res.status(500).json({ status: "error", message: error.message });
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
   }
 };
 
@@ -42,13 +58,67 @@ export const getProduct = async (req, res) => {
   }
 };
 
+export const renderEditProduct = async (req, res) => {
+  try {
+    const product = await getProductViewData(req.params.productId);
+
+    const categories = [
+      "Periféricos",
+      "Laptops",
+      "Componentes",
+      "Webcams",
+      "Accesorios",
+    ].map((category) => ({
+      name: category,
+      selected: category === product.category,
+    }));
+
+    res.render("editProduct", {
+      title: "Editar Producto",
+      product,
+      categories,
+      user: req.user.toObject(),
+    });
+  } catch (error) {
+    res.status(404).send(error.message);
+  }
+};
+
 export const createNewProduct = async (req, res) => {
   try {
-    const product = await createProduct(req.body);
+    const productData = {
+      ...req.body,
+    };
 
-    res.status(201).json({ status: "success", payload: product });
+    if (req.file) {
+      productData.thumbnail = `/images/${req.file.filename}`;
+    }
+
+    const product = await createProduct(productData);
+
+    res.status(201).json({
+      status: "success",
+      payload: product,
+    });
   } catch (error) {
-    res.status(400).json({ status: "error", message: error.message });
+    // Eliminar la imagen cargada en caso de error en el proceso de creación de producto
+    if (req.file) {
+      const imagePath = path.join(
+        process.cwd(),
+        "public",
+        "images",
+        req.file.filename,
+      );
+
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+
+    res.status(500).json({
+      status: "error",
+      message: error.message,
+    });
   }
 };
 

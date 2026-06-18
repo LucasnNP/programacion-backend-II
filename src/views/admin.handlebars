@@ -10,7 +10,7 @@
 
 <h2>Alta de nuevo producto</h2>
 
-<form id="createProductform">
+<form id="createProductForm" enctype="multipart/form-data">
   <input type="text" name="title" placeholder="Título" required />
   <input type="text" name="description" placeholder="Descripción" required />
   <input type="text" name="code" placeholder="Código" required />
@@ -40,6 +40,8 @@
     </option>
   </select>
 
+  <input type="file" name="thumbnail" accept="image/*" />
+
   <button type="submit">
     Crear producto
   </button>
@@ -57,6 +59,7 @@
       <th>Precio</th>
       <th>Stock</th>
       <th>Categoría</th>
+      <th>Imagen</th>
       <th>Estado</th>
       <th>Acciones</th>
     </tr>
@@ -69,6 +72,9 @@
         <td>${{this.price}}</td>
         <td>{{this.stock}}</td>
         <td>{{this.category}}</td>
+        <td>
+          <img src="{{this.thumbnail}}" alt="{{this.title}}" width="80" />
+        </td>
 
         <td>
           {{#if this.status}}
@@ -79,16 +85,28 @@
         </td>
 
         <td>
-          <button>Editar</button>
-          <button>Eliminar</button>
+          <button
+            onclick="location.href='/admin/edit/{{this.id}}'"
+          >Editar</button>
 
           {{#if this.status}}
-            <button>Desactivar</button>
+            <button
+              class="btn-toggle-status"
+              data-id="{{this._id}}"
+              data-status="false"
+            >Desactivar</button>
           {{else}}
-            <button>Activar</button>
+            <button
+              class="btn-toggle-status"
+              data-id="{{this._id}}"
+              data-status="true"
+            >Activar</button>
           {{/if}}
         </td>
       </tr>
     {{/each}}
   </tbody>
 </table>
+
+<script src="/js/createProduct.js"></script>
+<script src="/js/toggleStatus.js"></script>

@@ -24,11 +24,18 @@ export const getProductViewData = async (productId) => {
 };
 
 export const getCartViewData = async (cartId) => {
-  const cart = await cartRepository.getByIdWithProducts(cartId);
+  const cart = await cartRepository.getByIdWithProductsLean(cartId);
 
   if (!cart) {
     throw new Error("Carrito no encontrado");
   }
+
+  cart.products = cart.products.map((item) => ({
+    ...item,
+    subtotal: item.product.price * item.quantity,
+  }));
+
+  cart.total = cart.products.reduce((acc, item) => acc + item.subtotal, 0);
 
   return cart;
 };
