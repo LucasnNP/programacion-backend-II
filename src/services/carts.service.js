@@ -33,16 +33,16 @@ export const addProductsToCart = async (cartId, productId, quantity) => {
     throw new Error("Producto no encontrado");
   }
 
-  if (quantity > product.stock) {
-    throw new Error(`Stock insuficiente. Disponible: ${product.stock}`);
-  }
-
   if (!product.status) {
     throw new Error("EL producto no se encuentra disponible");
   }
 
   if (product.stock === 0) {
     throw new Error("Producto sin Stock disponible");
+  }
+
+  if (quantity > product.stock) {
+    throw new Error(`Stock insuficiente. Disponible: ${product.stock}`);
   }
 
   // Verificar carrito

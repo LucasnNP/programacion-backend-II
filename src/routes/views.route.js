@@ -56,6 +56,18 @@ viewsRouter.get("/login", (req, res) => {
   res.render("login", { title: "Login" });
 });
 
+// Vista de recuperación de contraseña
+viewsRouter.get("/forgot-password", (req, res) => {
+  res.render("forgotPassword", { title: "Recuperar Contraseña" });
+});
+
+// Vista de restablecimiento de contraseña
+viewsRouter.get("/reset-password/:token", (req, res) => {
+  res.render("resetPassword", {
+    title: "Restablecer contraseña",
+  });
+});
+
 // Vista perfil queda como está ya que no consulta db
 viewsRouter.get(
   "/profile",

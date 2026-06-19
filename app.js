@@ -1,4 +1,6 @@
+import "./src/config/env.js";
 import express from "express";
+import __dirname from "./dirname.js";
 import cookieParser from "cookie-parser";
 import productsRouter from "./src/routes/products.route.js";
 import cartRouter from "./src/routes/cart.route.js";
@@ -6,15 +8,10 @@ import sessionsRouter from "./src/routes/sessions.route.js";
 import { engine } from "express-handlebars";
 import viewsRouter from "./src/routes/views.route.js";
 import connectMongoDB from "./src/config/db.js";
-import dotenv from "dotenv";
-import __dirname from "./dirname.js";
 import { initializePassport } from "./src/config/passport.config.js";
 import passport from "passport";
 import { verifyToken } from "./src/utils/jwt.js";
 import User from "./src/models/user.model.js";
-
-//inicialización de variables de entorno
-dotenv.config({ path: __dirname + "/.env" });
 
 const app = express();
 const PORT = process.env.PORT || 8081;

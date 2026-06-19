@@ -19,7 +19,12 @@ const cartRouter = express.Router();
 cartRouter.post("/", createNewCart);
 
 // Obtener productos de un carrito por ID
-cartRouter.get("/:cartId", validateObjectId("cartId"), getCart);
+cartRouter.get(
+  "/:cartId",
+  validateObjectId("cartId"),
+  validateCartOwner,
+  getCart,
+);
 
 // Agregar un producto a un carrito por ID
 cartRouter.post(

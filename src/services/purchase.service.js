@@ -9,6 +9,7 @@ const productRepository = new ProductRepository();
 const ticketRepository = new TicketRepository();
 
 export const purchaseCart = async (cartId, purchaseEmail) => {
+  // Importante no usar getByIdWithProductsLean porque luego se ejecuta cart.save()
   const cart = await cartRepository.getByIdWithProducts(cartId);
 
   if (!cart) {

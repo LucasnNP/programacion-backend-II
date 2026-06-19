@@ -1,68 +1,42 @@
-<h1>Tu carrito</h1>
+<div id="cart-container" data-cart-id="{{cart._id}}">
 
-{{#if cart.products.length}}
+  <h1>Tu carrito</h1>
 
-  <table border="1" cellpadding="10">
-
-    <thead>
-      <tr>
-        <th>Producto</th>
-        <th>Precio</th>
-        <th>Cantidad</th>
-        <th>Subtotal</th>
-        <th>Acción</th>
-      </tr>
-    </thead>
-
-    <tbody>
-
+  {{#if cart.products.length}}
+    <ul>
       {{#each cart.products}}
-        <tr>
+        <li>
+          {{this.product.title}}
+          - ${{this.product.price}}
+          (Cantidad:
+          {{this.quantity}}) - Subtotal: ${{this.subtotal}}
 
-          <td>{{this.product.title}}</td>
-
-          <td>${{this.product.price}}</td>
-
-          <td>{{this.quantity}}</td>
-
-          <td>
-            ${{this.subtotal}}
-          </td>
-
-          <td>
-            <button
-              class="btn-remove-product"
-              data-product="{{this.product._id}}"
-            >
-              Quitar
-            </button>
-          </td>
-
-        </tr>
+          <button
+            class="btn-remove-product"
+            data-product-id="{{this.product._id}}"
+          >
+            Quitar
+          </button>
+        </li>
       {{/each}}
+    </ul>
 
-    </tbody>
+    <hr />
 
-  </table>
+    <h3>Total: ${{cart.total}}</h3>
 
-  <br />
+    <button id="btn-clear-cart">
+      Vaciar carrito
+    </button>
 
-  <h3>Total: ${{cart.total}}</h3>
+    <button id="btn-purchase-cart">
+      Finalizar compra
+    </button>
 
-  <br />
+  {{else}}
+    <p>El carrito está vacío</p>
+  {{/if}}
 
-  <button id="btn-clear-cart">
-    Vaciar carrito
-  </button>
-
-  <button id="btn-purchase">
-    Finalizar compra
-  </button>
-
-{{else}}
-
-  <p>El carrito está vacío</p>
-
-{{/if}}
+</div>
 
 <script src="/js/cartView.js"></script>

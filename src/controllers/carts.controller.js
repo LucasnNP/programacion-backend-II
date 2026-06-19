@@ -55,12 +55,12 @@ export const updateQuantity = async (req, res) => {
 
 export const removeProduct = async (req, res) => {
   try {
-    const products = await removeProductFromCart(
+    const cart = await removeProductFromCart(
       req.params.cartId,
       req.params.productId,
     );
 
-    res.status(200).json({ status: "success", payload: products });
+    res.status(200).json({ status: "success", payload: cart });
   } catch (error) {
     res.status(400).json({ status: "error", message: error.message });
   }
@@ -68,9 +68,9 @@ export const removeProduct = async (req, res) => {
 
 export const emptyCart = async (req, res) => {
   try {
-    await clearCart(req.params.cartId);
+    const cart = await clearCart(req.params.cartId);
 
-    res.status(204).send();
+    res.status(200).json({ status: "success", payload: cart });
   } catch (error) {
     res.status(400).json({ status: "error", message: error.message });
   }

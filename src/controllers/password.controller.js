@@ -27,7 +27,7 @@ export const forgotPassword = async (req, res) => {
 
     const token = generateRecoveryToken(user);
 
-    const recoveryLink = `http://localhost:8080/api/sessions/reset-password/${token}`;
+    const recoveryLink = `http://localhost:8080/reset-password/${token}`;
 
     await sendPasswordRecoveryEmail(user.email, recoveryLink);
 
@@ -36,6 +36,8 @@ export const forgotPassword = async (req, res) => {
       message: "Correo de recuperación enviado",
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       status: "error",
       message: error.message,
